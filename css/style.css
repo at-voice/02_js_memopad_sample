@@ -1,0 +1,28 @@
+body {
+    font-family: "Sawarabi Mincho";
+
+    background: #16BFFD;
+    /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #CB3066, #16BFFD);
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #CB3066, #16BFFD);
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.main {
+    align-items: center;
+}
+
+
+/* 生成短歌表示wrapper */
+
+/* 登録wrapper */
+.registration-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+
+/* 5音節wrapper */
+
+/* 7音節wrapper */

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Sawarabi+Mincho" rel="stylesheet">
+    <title>短歌メモ</title>
+</head>
+
+<body>
+
+    <main>
+        <!-- 全体 -->
+        <div class="main">
+
+
+            <!-- 生成短歌表示wrapper -->
+            <div class="tanka-generation-wrapper">
+                <div class="tanka-generation-display">
+                    ここに生成されたものが表示される
+                </div>
+
+                <div class="tanka-generation-btn">
+                    ここにボタンたちを格納する
+                </div>
+            </div>
+
+
+            <hr>
+            <!-- 水平線（あとで消すかも） -->
+
+            <!-- 登録wrapper -->
+            <div class="registration-wrapper">
+
+                <!-- 5音節wrapper -->
+                <div class="five-syllables-wrapper">
+
+                    <!-- 5音節登録ゾーン -->
+                    <div class="five-syllables-registration">
+                        <input type="text" name="" id="five-syllables" placeholder="5音節入れてね">
+                        <button type="button" id="five-regist-btn">登録</button>
+                        <button type="button" id="five-delete-btn">削除</button>
+                        <!-- ※type="button"で押しても反応しないボタンを作る（他にsubmitやresetがある） -->
+                    </div>
+
+                    <hr>
+
+                    <!-- 5音節登録一覧 -->
+                    <div class="five-syllables-registration-list">
+                        <ul class="five-syllables-registration-list-inside"
+                            id="five-syllables-registration-list-inside"></ul>
+                    </div>
+
+
+
+                </div>
+
+
+
+                <!-- 7音節wrapper -->
+                <div class="seven-syllables-wrapper">
+
+                    <!-- 7音節登録ゾーン -->
+                    <div class="seven-syllables-registration">
+                        入力フォームとボタン
+                    </div>
+
+                    <hr>
+
+                    <!-- 7音節登録一覧 -->
+                    <div class="seven-syllables-registration-list">
+                        下にだーっと表示する。クリックで表示非表示できると良い。
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        <div class="to-do">
+            <ul>
+                <li>このリストをコメントアウトして</li>
+                <li>グラデの色どうにかして</li>
+                <li>margin/paddingでセンタリング</li>
+                <li>ぐぐるのウェブアイコンて使えるのかな</li>
+            </ul>
+
+        </div>
+    </main>
+
+
+
+
+    <!-- 以下JSゾーン -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script>
+
+        // ●5音節の登録
+        // データを保存するよ
+        // saveボタンを押したとき
+        $("#five-regist-btn").on("click", function () {
+            // ①タイトルと本文の値を取得してまとめる．
+            console.log($("#five-syllables").val());
+            // 
+            // #five-syllables内に入力された5音節を取得 val→取得
+            const five_syllables_inputted = $("#five-syllables").val();
+            console.log(five_syllables_inputted); //取得したもの確認
+            // 
+            // keyとvalueをセットにしてローカルストレージに保存します
+            // keyは登録個数に応じて増えていくようにしたいので、保存されている要素の数を持ってきます(localStorage.length)
+            // 持ってきた数（数字）は文字列ではないので、.toString()を使って文字列に変換します
+            // value(値)は#five-syllables内に入力されたものを取得します。これは文字列だから変換とかいらない。
+            localStorage.setItem(localStorage.length.toString(), $("#five-syllables").val());
+            // 保存が完了したら入力欄の中を空に変更します。「val()」は、HTMLタグ内に記述されているvalue属性を取得したり変更することができるメソッドになります。
+            $("#five-syllables").val("");
+            showList();
+        });
+
+
+
+
+
+        //     // keyとvalueで保存する準備をします。
+        //     // ただし、keyの数は増えていってほしいのでそういう処理を作ります
+        //     //
+        //     //
+        //     // const five_start = 0;
+        //     // const five_end = 2021;
+
+
+        //     //
+        //     let five_syllables = ""; //変数five_syllablesについて定義していくけど条件によるから以下に書くね
+        //     // for (`開始条件`; `繰り返しを続ける条件`; `回数のカウントの仕方`) {
+        //     // 実際に繰り返したい処理}だよ
+        //     for (let i = 0; i <= 100; i++) {
+        //         console.log(i);
+        //         // five_syllables += i;
+        //     }
+
+        //     // 変数リスト「five_syllables_list」を作るよ。中身の項目名と内容は以下の通りだよ
+        //     const five_syllables_list = {
+        //         [five_syllables]: five_syllables_inputted, //このinputは上で作った変数のinput
+        //         // jQueryの変数名ではハイフンは使えません
+        //     };
+        //     //
+        //     // ※便利そうなメモ
+        //     // https://qiita.com/kmagai/items/95481a3b9fd97e4616c9
+        //     // var myValue = "this_is_value";
+        //     // var myKey = "this_is_key";
+        //     // var obj = { [myKey]: myValue }; // => {"this_is_key": "this_is_value"}
+
+
+
+        //     // consoleで確認するね。
+        //     console.log(five_syllables_list)
+
+        //     // ②まとめたデータを JSON 形式に変換する．
+        //     //
+        //     // 関数five_syllables_listをJson形式に変換するね.変換されたデータのことはJsonData1と呼ぶね。
+        //     const jsonData1 = JSON.stringify(five_syllables_list);
+        //     // localStorageにkeyname;five_syllablesを,keyvalue;JsonDataで保存するね
+        //     localStorage.setItem("five_syllables", jsonData1);
+        // });
+
+
+        // ●5音節の削除
+
+        // ●5音節の登録一覧表示
+        // すでに登録されているものは常に表示するようにします
+        // やることが多いので、複数の作業命令をまとめたオリジナル関数showlist_fiveを作成します(https://mk-design.xyz/blog/20210215/)
+        // やること①保存データの呼び出し②保存データの表示
+
+        function showList() {
+            $("#five-syllables-registration-list-inside").html("");//ここの.htmlは指定要素の取得
+            for (let i = 0; i < localStorage.length; i++) {
+                //#five-syllables-registration-list-insideについての定義に使う変数iの条件です
+                // 変数iは最初0が入っていますが、localStorangeに要素が入る限り1ずつ加算されます
+                // for (`開始条件`; `繰り返しを続ける条件`; `回数のカウントの仕方`) {
+                // 実際に繰り返したい処理}だよ
+
+                $("#five-syllables-registration-list-inside").append //#five~のところに.append以下のものを出現させます
+                    // .append(追加したいもの) 追加できるのはテキスト、HTMLタグ、jQueryオブジェクト、jQuery変数などです
+                    ("<li class='five-syllables-registration-list-item'><button class='btn btn-danger mr-2' onclick='deleteItem(" + localStorage.key(i) + ")'>さーくじょ<i class='fas fa-trash-alt'></i></button>"
+                        // <li>の中には、クリックしたら削除が実行されるボタンと登録済みアイテムが入っています
+                        // 
+                        + localStorage.getItem(localStorage.key(i)) + "</li>");
+                // 
+            }
+        }
+
+
+
+
+// ●7音節の登録
+
+// ●7音節の削除
+
+// ●オールクリア
+
+// ●短歌生成
+
+
+
+
+
+    </script>
+
+</body>
+
+</html>
