@@ -7,22 +7,100 @@ body {
     /* Chrome 10-25, Safari 5.1-6 */
     background: linear-gradient(to right, #CB3066, #16BFFD);
     /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+
+}
+
+div {
+    margin: 5vh auto;
 }
 
 .main {
-    align-items: center;
+    margin: 5vh auto;
+    /* 要素を真ん中寄せ */
+    width: 50vw;
+    font-size: 3vh;
 }
+
+
+.tanka-generation-display input {
+    line-height: 0.5vh;
+}
+
+.tanka-generation-display input {
+    background: transparent;
+    border: none;
+    border-bottom: 0.5px dotted #FFF;
+    font-size: 6vh;
+    text-align: center;
+    color: black;
+    font-family: "Sawarabi Mincho";
+}
+
+/* ボタン全体 */
+.btn {
+    background: transparent;
+    border: none;
+    border-bottom: 0.5px dotted #FFF;
+    font-size: 3vh;
+    text-align: center;
+    color: black;
+    font-family: "Sawarabi Mincho";
+    margin: 0.5vw;
+}
+
+.btn:hover {
+    background: white;
+    opacity: 20%;
+    border: none;
+    border: 0.5px dotted #FFF;
+    font-size: 3vh;
+    text-align: center;
+    color: black;
+    font-family: "Sawarabi Mincho";
+    margin: 0.5vw;
+    border-radius: 15px;
+}
+
 
 
 /* 生成短歌表示wrapper */
 
-/* 登録wrapper */
-.registration-wrapper {
-    display: flex;
-    align-items: center;
+.tanka-generation-display p {
+    text-align: center;
+    font-size: 6vh;
+}
+
+.gt_btn {
+    text-align: right;
 }
 
 
+
+
+/* 登録wrapper */
+.registration-wrapper input {
+    background: transparent;
+    border: none;
+    border-bottom: 0.5px dotted #FFF;
+    text-align: center;
+    color: black;
+    font-family: "Sawarabi Mincho";
+    margin: 0.5vw;
+
+}
+
+
+
 /* 5音節wrapper */
+.five-syllables-registration {
+    text-align: center;
+}
+
+li {
+    list-style: none;
+}
+
+
 
 /* 7音節wrapper */

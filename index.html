@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css?family=Sawarabi+Mincho" rel="stylesheet">
-    <title>短歌メモ</title>
+    <title>俳句メモ</title>
 </head>
 
 <body>
@@ -20,17 +20,19 @@
             <!-- 生成短歌表示wrapper -->
             <div class="tanka-generation-wrapper">
                 <div class="tanka-generation-display">
-                    ここに生成されたものが表示される
+
+                    <p class="first">*****</p>
+                    <p class="second"><input type="text" placeholder="type"></p>
+                    <p class="third">*****</p>
                 </div>
 
-                <div class="tanka-generation-btn">
-                    ここにボタンたちを格納する
+                <div class="gt_btn">
+                    <button id="generation" type="button" class="btn">生成</button>
+                    <button id="tweet-btn" type="button" class="btn">ツイート</button>
                 </div>
             </div>
 
 
-            <hr>
-            <!-- 水平線（あとで消すかも） -->
 
             <!-- 登録wrapper -->
             <div class="registration-wrapper">
@@ -40,14 +42,19 @@
 
                     <!-- 5音節登録ゾーン -->
                     <div class="five-syllables-registration">
-                        <input type="text" name="" id="five-syllables" placeholder="5音節入れてね">
-                        <button type="button" id="five-regist-btn">登録</button>
-                        <button type="button" id="five-delete-btn">削除</button>
+                        <input type="text" name="" id="five-syllables" placeholder="5音節">
+                        <button type="button" id="five-regist-btn" class="btn">登録</button>
+                        <button type="button" id="five-delete-btn" class="btn">全削除</button>
                         <!-- ※type="button"で押しても反応しないボタンを作る（他にsubmitやresetがある） -->
                     </div>
 
-                    <hr>
 
+
+                    <div>
+                        <p>
+                            <a class="count">0</a>/100登録済み
+                        </p>
+                    </div>
                     <!-- 5音節登録一覧 -->
                     <div class="five-syllables-registration-list">
                         <ul class="five-syllables-registration-list-inside"
@@ -59,36 +66,12 @@
                 </div>
 
 
-
-                <!-- 7音節wrapper -->
-                <div class="seven-syllables-wrapper">
-
-                    <!-- 7音節登録ゾーン -->
-                    <div class="seven-syllables-registration">
-                        入力フォームとボタン
-                    </div>
-
-                    <hr>
-
-                    <!-- 7音節登録一覧 -->
-                    <div class="seven-syllables-registration-list">
-                        下にだーっと表示する。クリックで表示非表示できると良い。
-                    </div>
-
-                </div>
-
             </div>
 
-        </div>
-        <div class="to-do">
-            <ul>
-                <li>このリストをコメントアウトして</li>
-                <li>グラデの色どうにかして</li>
-                <li>margin/paddingでセンタリング</li>
-                <li>ぐぐるのウェブアイコンて使えるのかな</li>
-            </ul>
+
 
         </div>
+
     </main>
 
 
@@ -98,6 +81,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <script>
+        $(function () { //ページ読み込み時点でやること
+            // 登録単語数の表示
+            $(".count").text(localStorage.length);
+            // 登録単語リストの表示
+            showListFive();
+        });
+
 
         // ●5音節の登録
         // データを保存するよ
@@ -117,13 +107,20 @@
             localStorage.setItem(localStorage.length.toString(), $("#five-syllables").val());
             // 保存が完了したら入力欄の中を空に変更します。「val()」は、HTMLタグ内に記述されているvalue属性を取得したり変更することができるメソッドになります。
             $("#five-syllables").val("");
-            showList();
+            showListFive();
+        });
+
+        //  ●全削除
+        $("#five-delete-btn").on("click", function () {
+            localStorage.clear();
+            showListFive();
         });
 
 
+    </script>
 
-
-
+    <script> //記録
+    // 記録
         //     // keyとvalueで保存する準備をします。
         //     // ただし、keyの数は増えていってほしいのでそういう処理を作ります
         //     //
@@ -166,15 +163,15 @@
         //     localStorage.setItem("five_syllables", jsonData1);
         // });
 
+    </script>
 
-        // ●5音節の削除
+    <script>
 
         // ●5音節の登録一覧表示
         // すでに登録されているものは常に表示するようにします
         // やることが多いので、複数の作業命令をまとめたオリジナル関数showlist_fiveを作成します(https://mk-design.xyz/blog/20210215/)
         // やること①保存データの呼び出し②保存データの表示
-
-        function showList() {
+        function showListFive() {
             $("#five-syllables-registration-list-inside").html("");//ここの.htmlは指定要素の取得
             for (let i = 0; i < localStorage.length; i++) {
                 //#five-syllables-registration-list-insideについての定義に使う変数iの条件です
@@ -184,7 +181,56 @@
 
                 $("#five-syllables-registration-list-inside").append //#five~のところに.append以下のものを出現させます
                     // .append(追加したいもの) 追加できるのはテキスト、HTMLタグ、jQueryオブジェクト、jQuery変数などです
-                    ("<li class='five-syllables-registration-list-item'><button class='btn btn-danger mr-2' onclick='deleteItem(" + localStorage.key(i) + ")'>さーくじょ<i class='fas fa-trash-alt'></i></button>"
+                    ("<li class='five-syllables-registration-list-item'><button class='btn' onclick='deleteItem(" + localStorage.key(i) + ")'>さーくじょ</button>"
+                        // <li>の中には、クリックしたら削除が実行されるボタンと登録済みアイテムが入っています
+                        // 
+                        + localStorage.getItem(localStorage.key(i)) + "</li>");
+            }
+        };
+    </script>
+
+
+    <!-- <script> //7音封印
+        // ●7音節の登録
+        // データを保存するよ
+        // saveボタンを押したとき
+        $("#seven-regist-btn").on("click", function () {
+            // ①タイトルと本文の値を取得してまとめる．
+            console.log($("#seven-syllables").val());
+            // 
+            // #seven-syllables内に入力された7音節を取得 val→取得
+            const seven_syllables_inputted = $("#seven-syllables").val();
+            console.log(seven_syllables_inputted); //取得したもの確認
+            // 
+            // keyとvalueをセットにしてローカルストレージに保存します
+            // keyは登録個数に応じて増えていくようにしたいので、保存されている要素の数を持ってきます(localStorage.length)
+            // 持ってきた数（数字）は文字列ではないので、.toString()を使って文字列に変換します
+            // value(値)は#five-syllables内に入力されたものを取得します。これは文字列だから変換とかいらない。
+            localStorage.setItem("seven" + localStorage.length.toString(), $("#seven-syllables").val());
+            // 保存が完了したら入力欄の中を空に変更します。「val()」は、HTMLタグ内に記述されているvalue属性を取得したり変更することができるメソッドになります。
+            $("#seven-syllables").val("");
+            showListSeven();
+        });
+
+
+
+
+        // ●7音節の登録一覧表示
+        // すでに登録されているものは常に表示するようにします
+        // やることが多いので、複数の作業命令をまとめたオリジナル関数showlist_fiveを作成します(https://mk-design.xyz/blog/20210215/)
+        // やること①保存データの呼び出し②保存データの表示
+
+        function showListSeven() {
+            $("#seven-syllables-registration-list-inside").html("");//ここの.htmlは指定要素の取得
+            for (let i = 0; i < localStorage.length; i++) {
+                //#seven-syllables-registration-list-insideについての定義に使う変数iの条件です
+                // 変数iは最初0が入っていますが、localStorangeに要素が入る限り1ずつ加算されます
+                // for (`開始条件`; `繰り返しを続ける条件`; `回数のカウントの仕方`) {
+                // 実際に繰り返したい処理}だよ
+
+                $("#seven-syllables-registration-list-inside").append //#seven~のところに.append以下のものを出現させます
+                    // .append(追加したいもの) 追加できるのはテキスト、HTMLタグ、jQueryオブジェクト、jQuery変数などです
+                    ("<li class='seven-syllables-registration-list-item'><button class='btn btn-danger mr-2' onclick='deleteItem(" + localStorage.key(i) + ")'>さーくじょ<i class='fas fa-trash-alt'></i></button>"
                         // <li>の中には、クリックしたら削除が実行されるボタンと登録済みアイテムが入っています
                         // 
                         + localStorage.getItem(localStorage.key(i)) + "</li>");
@@ -192,10 +238,6 @@
             }
         }
 
-
-
-
-// ●7音節の登録
 
 // ●7音節の削除
 
@@ -207,7 +249,83 @@
 
 
 
+    </script> -->
+
+    <!--  -->
+
+
+
+    <!-- 表示する -->
+    <script>
+        $("#generation").on("click", function () {
+            // 生成済みをりセットする
+            // 
+            $(".first").text("");
+            $(".third").text("");
+
+
+            // ①乱数を作る
+            // 
+            // 1句目
+            // 0から1の間でランダムな値（乱数）を表示
+            const randomNumber1 = Math.random();
+            // 0から99までのどれかが表示される
+            const randomNumber2 = Math.floor(Math.random() * 30);
+
+            // 3句目
+            // 0から1の間でランダムな値（乱数）を表示
+            const randomNumber3 = Math.random();
+            // 0から99までのどれかが表示される
+            const randomNumber4 = Math.floor(Math.random() * 30);
+
+            // ②表示させる
+            // １句目
+            if (randomNumber2 < localStorage.length) {
+                // 条件式を満たす場合の処理
+                $(".first").append(localStorage.getItem(randomNumber2));
+
+            } else {
+                // 条件式を満たさない場合の処理
+                $(".first").append("知らぬ間に");
+
+            }
+
+            // 3句目
+            if (randomNumber4 < localStorage.length) {
+                // 条件式を満たす場合の処理
+                $(".third").append(localStorage.getItem(randomNumber4));
+
+            } else {
+                // 条件式を満たさない場合の処理
+                $(".third").append("ささやいた");
+
+            }
+
+
+
+
+
+
+
+        });
+
+
+
+        // ツイートする
+
+        $("#tweet_btn").click(function () {
+            const second = (".second");
+            let tw_contents = (localStorage.getItem(randomNumber2) + second + localStorage.getItem(randomNumber4));
+
+            window.open().location.href = (tw_contents + "#俳句");
+        });
+
+
     </script>
+
+
+
+
 
 </body>
 
